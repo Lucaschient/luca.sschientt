@@ -11,6 +11,7 @@ const AdminPanel = () => {
     taxaValue: 'Taxa Caução R$ 99,00'
   });
   const [saved, setSaved] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     const savedSettings = localStorage.getItem('adminSettings');
@@ -28,9 +29,15 @@ const AdminPanel = () => {
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
+      setUploading(true);
       const reader = new FileReader();
       reader.onloadend = () => {
-        setSettings(prev => ({ ...prev, qrCodeUrl: reader.result }));
+        const newSettings = { ...settings, qrCodeUrl: reader.result };
+        setSettings(newSettings);
+        // Auto save after upload
+        localStorage.setItem('adminSettings', JSON.stringify(newSettings));
+        setUploading(false);
+        alert('✓ QR Code carregado e salvo com sucesso!');
       };
       reader.readAsDataURL(file);
     }
