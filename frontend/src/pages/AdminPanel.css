@@ -124,7 +124,7 @@
 }
 
 .header-content {
-  max-width: 1200px;
+  max-width: 900px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -147,12 +147,15 @@
   background: #f5f5f5;
   color: #333;
   border: 2px solid #e0e0e0;
-  padding: 12px 30px;
+  padding: 12px 24px;
   font-size: 16px;
   font-weight: 500;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .btn-logout:hover {
@@ -161,14 +164,11 @@
   color: #6e0ad6;
 }
 
-/* Admin Content */
-.admin-content {
-  max-width: 1200px;
+/* Admin Content Simple */
+.admin-content-simple {
+  max-width: 900px;
   margin: 0 auto;
   padding: 40px 20px;
-  display: grid;
-  grid-template-columns: 1fr 350px;
-  gap: 30px;
 }
 
 .settings-card {
@@ -198,10 +198,28 @@
   margin-bottom: 10px;
 }
 
-.setting-group .admin-input {
+.admin-input {
   width: 100%;
   padding: 16px 20px;
+  font-size: 16px;
+  border: 2px solid #e0e0e0;
   border-radius: 8px;
+  background: #f9f9f9;
+  transition: all 0.3s ease;
+}
+
+.admin-input:focus {
+  outline: none;
+  border-color: #6e0ad6;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(110, 10, 214, 0.1);
+}
+
+.input-hint {
+  font-size: 13px;
+  color: #999;
+  margin-top: 8px;
+  font-style: italic;
 }
 
 /* QR Code Upload */
@@ -276,50 +294,19 @@
   box-shadow: 0 6px 20px rgba(110, 10, 214, 0.4);
 }
 
-/* Info Card */
-.info-card {
-  background: white;
-  padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  height: fit-content;
-}
-
-.info-card h3 {
-  font-size: 20px;
-  color: #333;
-  margin-bottom: 20px;
-}
-
-.info-card ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.info-card li {
-  padding: 12px 0;
-  border-bottom: 1px solid #f0f0f0;
-  font-size: 14px;
-  color: #666;
-  line-height: 1.6;
-}
-
-.info-card li:last-child {
-  border-bottom: none;
+.success-message {
+  margin-top: 20px;
+  padding: 16px;
+  background: #d4edda;
+  color: #155724;
+  border: 2px solid #c3e6cb;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  text-align: center;
 }
 
 /* Responsive */
-@media (max-width: 1024px) {
-  .admin-content {
-    grid-template-columns: 1fr;
-  }
-
-  .info-card {
-    order: -1;
-  }
-}
-
 @media (max-width: 768px) {
   .login-card {
     padding: 40px 30px;
@@ -334,7 +321,7 @@
   }
 
   .btn-logout {
-    padding: 10px 20px;
+    padding: 10px 16px;
     font-size: 14px;
   }
 
@@ -342,7 +329,7 @@
     padding: 30px 20px;
   }
 
-  .admin-content {
+  .admin-content-simple {
     padding: 20px;
   }
 }
