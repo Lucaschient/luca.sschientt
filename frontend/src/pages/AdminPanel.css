@@ -116,6 +116,17 @@
   gap: 15px;
 }
 
+.uploading-indicator {
+  padding: 30px;
+  background: #fff3cd;
+  border: 2px solid #ffc107;
+  border-radius: 12px;
+  text-align: center;
+  color: #856404;
+  font-weight: 600;
+  font-size: 16px;
+}
+
 .qrcode-preview-box {
   display: flex;
   flex-direction: column;
@@ -149,10 +160,20 @@
   color: #999;
 }
 
+.qrcode-empty p {
+  margin: 5px 0;
+}
+
+.hint-small {
+  font-size: 14px;
+  color: #bbb;
+}
+
 .success-text {
   color: #155724;
   font-weight: 600;
   margin: 0;
+  font-size: 15px;
 }
 
 .btn-upload {
@@ -176,6 +197,13 @@
   background: #5c08b8;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(110, 10, 214, 0.3);
+}
+
+.input-hint {
+  font-size: 13px;
+  color: #999;
+  margin-top: 8px;
+  line-height: 1.8;
 }
 
 .btn-save {
