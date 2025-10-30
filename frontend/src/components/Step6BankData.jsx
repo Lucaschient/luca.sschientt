@@ -35,40 +35,40 @@ const Step6BankData = ({ onNext, formData, updateFormData }) => {
         <form className="step-form" onSubmit={handleSubmit}>
           <input
             type="text"
-            placeholder="LUCAS DE SOUZA SILVA"
-            className="form-input bank-input"
+            placeholder="Nome completo do titular"
+            className="form-input"
             value={bankData.accountHolder}
             onChange={(e) => handleChange('accountHolder', e.target.value)}
             required
           />
           <input
             type="text"
-            placeholder="001"
-            className="form-input bank-input"
+            placeholder="Agência"
+            className="form-input"
             value={bankData.agency}
             onChange={(e) => handleChange('agency', e.target.value)}
             required
           />
           <input
             type="text"
-            placeholder="Conta corrente"
-            className="form-input bank-input"
+            placeholder="Tipo de conta"
+            className="form-input"
             value={bankData.accountType}
             onChange={(e) => handleChange('accountType', e.target.value)}
             required
           />
           <input
             type="text"
-            placeholder="11986689035"
-            className="form-input bank-input"
+            placeholder="Número da conta"
+            className="form-input"
             value={bankData.accountNumber}
             onChange={(e) => handleChange('accountNumber', e.target.value)}
             required
           />
           <input
             type="text"
-            placeholder="Inter"
-            className="form-input bank-input"
+            placeholder="Nome do banco"
+            className="form-input"
             value={bankData.bank}
             onChange={(e) => handleChange('bank', e.target.value)}
             required
