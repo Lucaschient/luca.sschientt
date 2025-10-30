@@ -161,6 +161,64 @@ async def get_status_checks():
     
     return status_checks
 
+@api_router.post("/send-verification-email")
+async def send_verification(request: EmailSendRequest, background_tasks: BackgroundTasks):
+    """Send verification email"""
+    try:
+        # Generate verification code
+        verification_code = secrets.token_urlsafe(32)
+        
+        # Save to database
+        email_verification = EmailVerification(
+            email=request.email,
+            name=request.name,
+            verification_code=verification_code
+        )
+        await db.email_verifications.insert_one(email_verification.dict())
+        
+        # Send email in background
+        background_tasks.add_task(
+            send_verification_email,
+            request.email,
+            request.name,
+            verification_code
+        )
+        
+        return {
+            "success": True,
+            "message": "E-mail de verificação enviado com sucesso!",
+            "email": request.email
+        }
+    except Exception as e:
+        logger.error(f"Error sending verification email: {str(e)}")
+        return {
+            "success": False,
+            "message": f"Erro ao enviar e-mail: {str(e)}"
+        }
+
+@api_router.get("/verify-email/{code}")
+async def verify_email(code: str):
+    """Verify email with code"""
+    try:
+        verification = await db.email_verifications.find_one({"verification_code": code})
+        if not verification:
+            return {"success": False, "message": "Código de verificação inválido"}
+        
+        # Update verification status
+        await db.email_verifications.update_one(
+            {"verification_code": code},
+            {"$set": {"verified": True}}
+        )
+        
+        return {
+            "success": True,
+            "message": "E-mail verificado com sucesso!",
+            "email": verification["email"]
+        }
+    except Exception as e:
+        logger.error(f"Error verifying email: {str(e)}")
+        return {"success": False, "message": "Erro ao verificar e-mail"}
+
 # Include the router in the main app
 app.include_router(api_router)
 
