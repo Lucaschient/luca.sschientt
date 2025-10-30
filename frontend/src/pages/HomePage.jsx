@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './HomePage.css';
 import Step1Welcome from '../components/Step1Welcome';
 import Step2Form from '../components/Step2Form';
+import Step2_5EmailVerification from '../components/Step2_5EmailVerification';
 import Step3AlmostThere from '../components/Step3AlmostThere';
 import Step4Taxa from '../components/Step4Taxa';
 import Step5Payment from '../components/Step5Payment';
@@ -40,14 +41,16 @@ const HomePage = () => {
       case 2:
         return <Step2Form onNext={nextStep} formData={formData} updateFormData={updateFormData} />;
       case 3:
-        return <Step3AlmostThere onNext={nextStep} />;
+        return <Step2_5EmailVerification onNext={nextStep} formData={formData} />;
       case 4:
-        return <Step4Taxa onNext={nextStep} />;
+        return <Step3AlmostThere onNext={nextStep} />;
       case 5:
-        return <Step5Payment onNext={nextStep} />;
+        return <Step4Taxa onNext={nextStep} />;
       case 6:
-        return <Step6BankData onNext={nextStep} formData={formData} updateFormData={updateFormData} />;
+        return <Step5Payment onNext={nextStep} />;
       case 7:
+        return <Step6BankData onNext={nextStep} formData={formData} updateFormData={updateFormData} />;
+      case 8:
         return <Step7Finalized />;
       default:
         return <Step1Welcome onNext={nextStep} />;
