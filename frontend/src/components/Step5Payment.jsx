@@ -8,9 +8,9 @@ import { Copy, Check } from 'lucide-react';
 const Step5Payment = ({ onNext }) => {
   const [copied, setCopied] = useState(false);
   const [settings, setSettings] = useState({
-    pixKey: '00020126860014br.gov.bcb.pix2564pix',
-    qrCodeUrl: '/qrcode-placeholder.png',
-    taxaValue: 'R$ 99,00'
+    pixKey: '(11) 98668-9035',
+    qrCodeUrl: 'https://customer-assets.emergentagant.com/job_vendas-pay/artifacts/jvnivn9w_IMG-20251030-WA0000.jpg',
+    taxaValue: 'Taxa Caução R$ 99,00'
   });
 
   useEffect(() => {
