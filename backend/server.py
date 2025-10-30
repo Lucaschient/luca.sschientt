@@ -10,12 +10,9 @@ from typing import List
 import uuid
 from datetime import datetime, timezone
 import secrets
-import resend
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-
-# Configure Resend API
-resend.api_key = "re_123456789_DEMO_KEY_FOR_TESTING"
+import smtplib
 
 
 ROOT_DIR = Path(__file__).parent
