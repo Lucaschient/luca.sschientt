@@ -1,49 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import './AdminPanel.css';
-import { Lock, Settings, Save, Upload, Eye, EyeOff } from 'lucide-react';
+import { Settings, Save, Upload, ArrowLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const AdminPanel = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
   const [settings, setSettings] = useState({
     pixKey: '00020126860014br.gov.bcb.pix2564pix',
     qrCodeUrl: '',
-    taxaValue: 'R$ 99,00',
-    whatsappLink: 'https://wa.me/qr/ZQR4YAWICI7GM1'
+    taxaValue: 'R$ 99,00'
   });
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    // Check if already authenticated
-    const auth = sessionStorage.getItem('adminAuth');
-    if (auth === 'true') {
-      setIsAuthenticated(true);
-    }
-
     // Load saved settings
     const savedSettings = localStorage.getItem('adminSettings');
     if (savedSettings) {
       setSettings(JSON.parse(savedSettings));
     }
   }, []);
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    // Simple password check (change this to your desired password)
-    if (password === 'admin123') {
-      setIsAuthenticated(true);
-      sessionStorage.setItem('adminAuth', 'true');
-    } else {
-      alert('Senha incorreta!');
-    }
-  };
-
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    sessionStorage.removeItem('adminAuth');
-    setPassword('');
-  };
 
   const handleSave = () => {
     localStorage.setItem('adminSettings', JSON.stringify(settings));
@@ -62,134 +37,5 @@ const AdminPanel = () => {
     }
   };
 
-  if (!isAuthenticated) {
-    return (
-      <div className="admin-login">
-        <div className="login-card">
-          <div className="login-header">
-            <Lock size={48} className="lock-icon" />
-            <h1>Painel Administrativo</h1>
-            <p>Entre com sua senha para acessar</p>
-          </div>
-          <form onSubmit={handleLogin} className="login-form">
-            <div className="password-input-wrapper">
-              <input
-                type={showPassword ? 'text' : 'password'}
-                placeholder="Digite a senha"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="admin-input"
-                required
-              />
-              <button
-                type="button"
-                className="password-toggle"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </button>
-            </div>
-            <button type="submit" className="btn-login">
-              Entrar
-            </button>
-          </form>
-          <p className="login-hint">Senha padrão: admin123</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="admin-panel">
-      <header className="admin-header">
-        <div className="header-content">
-          <div className="header-title">
-            <Settings size={32} />
-            <h1>Painel Administrativo</h1>
-          </div>
-          <button onClick={handleLogout} className="btn-logout">
-            Sair
-          </button>
-        </div>
-      </header>
-
-      <div className="admin-content">
-        <div className="settings-card">
-          <h2>Configurações de Pagamento</h2>
-          
-          <div className="setting-group">
-            <label>Chave PIX</label>
-            <input
-              type="text"
-              value={settings.pixKey}
-              onChange={(e) => setSettings(prev => ({ ...prev, pixKey: e.target.value }))}
-              className="admin-input"
-              placeholder="Digite a chave PIX"
-            />
-          </div>
-
-          <div className="setting-group">
-            <label>Valor da Taxa Caução</label>
-            <input
-              type="text"
-              value={settings.taxaValue}
-              onChange={(e) => setSettings(prev => ({ ...prev, taxaValue: e.target.value }))}
-              className="admin-input"
-              placeholder="Ex: R$ 99,00"
-            />
-          </div>
-
-          <div className="setting-group">
-            <label>QR Code PIX</label>
-            <div className="qrcode-upload">
-              {settings.qrCodeUrl && (
-                <div className="qrcode-preview">
-                  <img src={settings.qrCodeUrl} alt="QR Code Preview" />
-                </div>
-              )}
-              <label htmlFor="qrcode-file" className="btn-upload">
-                <Upload size={20} />
-                {settings.qrCodeUrl ? 'Trocar QR Code' : 'Upload QR Code'}
-              </label>
-              <input
-                id="qrcode-file"
-                type="file"
-                accept="image/*"
-                onChange={handleFileUpload}
-                style={{ display: 'none' }}
-              />
-            </div>
-          </div>
-
-          <div className="setting-group">
-            <label>Link do WhatsApp (Enviar Comprovante)</label>
-            <input
-              type="text"
-              value={settings.whatsappLink}
-              onChange={(e) => setSettings(prev => ({ ...prev, whatsappLink: e.target.value }))}
-              className="admin-input"
-              placeholder="https://wa.me/..."
-            />
-          </div>
-
-          <button onClick={handleSave} className="btn-save">
-            <Save size={20} />
-            {saved ? 'Salvo com sucesso!' : 'Salvar Alterações'}
-          </button>
-        </div>
-
-        <div className="info-card">
-          <h3>Informações</h3>
-          <ul>
-            <li>Todas as alterações são aplicadas imediatamente para todos os usuários</li>
-            <li>O QR Code será exibido na página de pagamento</li>
-            <li>A chave PIX pode ser copiada pelos usuários</li>
-            <li>O link do WhatsApp abre quando o usuário clicar em "Enviar Comprovante"</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default AdminPanel;
+    <div className=\"admin-panel\">\n      <header className=\"admin-header\">\n        <div className=\"header-content\">\n          <div className=\"header-title\">\n            <Settings size={32} />\n            <h1>Painel Administrativo</h1>\n          </div>\n          <button onClick={() => navigate('/')} className=\"btn-logout\">\n            <ArrowLeft size={20} />\n            Voltar\n          </button>\n        </div>\n      </header>\n\n      <div className=\"admin-content-simple\">\n        <div className=\"settings-card\">\n          <h2>Configurações de Pagamento PIX</h2>\n          \n          <div className=\"setting-group\">\n            <label>Chave PIX (Copia e Cola)</label>\n            <input\n              type=\"text\"\n              value={settings.pixKey}\n              onChange={(e) => setSettings(prev => ({ ...prev, pixKey: e.target.value }))}\n              className=\"admin-input\"\n              placeholder=\"Digite a chave PIX\"\n            />\n            <p className=\"input-hint\">Esta chave será exibida na página de pagamento para os usuários copiarem</p>\n          </div>\n\n          <div className=\"setting-group\">\n            <label>Valor da Taxa Caução</label>\n            <input\n              type=\"text\"\n              value={settings.taxaValue}\n              onChange={(e) => setSettings(prev => ({ ...prev, taxaValue: e.target.value }))}\n              className=\"admin-input\"\n              placeholder=\"Ex: R$ 99,00\"\n            />\n            <p className=\"input-hint\">Formato recomendado: R$ 99,00</p>\n          </div>\n\n          <div className=\"setting-group\">\n            <label>QR Code PIX (Imagem)</label>\n            <div className=\"qrcode-upload\">\n              {settings.qrCodeUrl && (\n                <div className=\"qrcode-preview\">\n                  <img src={settings.qrCodeUrl} alt=\"QR Code Preview\" />\n                </div>\n              )}\n              <label htmlFor=\"qrcode-file\" className=\"btn-upload\">\n                <Upload size={20} />\n                {settings.qrCodeUrl ? 'Trocar QR Code' : 'Fazer Upload do QR Code'}\n              </label>\n              <input\n                id=\"qrcode-file\"\n                type=\"file\"\n                accept=\"image/*\"\n                onChange={handleFileUpload}\n                style={{ display: 'none' }}\n              />\n              <p className=\"input-hint\">Faça upload da imagem do QR Code PIX. Será exibido na página de pagamento.</p>\n            </div>\n          </div>\n\n          <button onClick={handleSave} className=\"btn-save\">\n            <Save size={20} />\n            {saved ? '✓ Alterações Salvas!' : 'Salvar Alterações'}\n          </button>\n\n          {saved && (\n            <div className=\"success-message\">\n              ✓ As alterações foram salvas e já estão aplicadas para todos os usuários!\n            </div>\n          )}\n        </div>\n      </div>\n    </div>\n  );\n};\n\nexport default AdminPanel;
