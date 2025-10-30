@@ -52,62 +52,98 @@ class EmailSendRequest(BaseModel):
     email: EmailStr
     name: str
 
-# Email sending function
+# Email sending function  
 async def send_verification_email(email: str, name: str, verification_code: str):
-    """Send verification email using Resend API"""
+    """Send verification email using Gmail SMTP with app password"""
+    
+    # Gmail configuration
+    smtp_server = "smtp.gmail.com"
+    smtp_port = 587
+    sender_email = "lucashipnos@gmail.com"
+    # NOTA: Esta senha precisa ser uma "Senha de App" do Gmail
+    # Gere em: https://myaccount.google.com/apppasswords
+    sender_password = os.environ.get('GMAIL_APP_PASSWORD', '')
+    
+    if not sender_password:
+        logger.warning("GMAIL_APP_PASSWORD not configured - email will not be sent")
+        # Simulate successful send for testing
+        logger.info(f"[SIMULADO] E-mail seria enviado para: {email}")
+        return True
     
     # Verification link
     verification_link = f"http://localhost:3000/?verified=true"
+    
+    # Create message
+    message = MIMEMultipart("alternative")
+    message["Subject"] = "✅ Confirme seu e-mail - OLX Vendas"
+    message["From"] = f"OLX Vendas <{sender_email}>"
+    message["To"] = email
     
     # HTML email template
     html = f"""
     <html>
       <body style="font-family: Arial, sans-serif; padding: 20px; background-color: #f5f5f5;">
-        <div style="max-width: 600px; margin: 0 auto; background: white; padding: 40px; border-radius: 10px;">
+        <div style="max-width: 600px; margin: 0 auto; background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
           <div style="text-align: center; margin-bottom: 30px;">
-            <h1 style="color: #6e0ad6; font-size: 36px;">OLX</h1>
+            <h1 style="color: #6e0ad6; font-size: 48px; margin: 0;">OLX</h1>
           </div>
-          <h2 style="color: #333;">Olá, {name}!</h2>
-          <p style="color: #666; font-size: 16px; line-height: 1.6;">
-            Obrigado por se cadastrar! Para continuar com sua venda, precisamos confirmar seu e-mail.
+          <h2 style="color: #333; margin-bottom: 20px;">Olá, {name}! 👋</h2>
+          <p style="color: #666; font-size: 16px; line-height: 1.8;">
+            Obrigado por se cadastrar na <strong>OLX Vendas</strong>! Para continuar com sua venda, precisamos confirmar seu e-mail.
           </p>
-          <p style="color: #666; font-size: 16px; line-height: 1.6;">
-            Clique no botão abaixo para confirmar:
-          </p>
-          <div style="text-align: center; margin: 30px 0;">
-            <a href="{verification_link}" style="background: #6e0ad6; color: white; padding: 15px 40px; text-decoration: none; border-radius: 8px; font-size: 18px; font-weight: bold; display: inline-block;">
-              Confirmar E-mail
+          <div style="text-align: center; margin: 40px 0;">
+            <a href="{verification_link}" style="background: linear-gradient(135deg, #6e0ad6 0%, #8e2de2 100%); color: white; padding: 18px 50px; text-decoration: none; border-radius: 8px; font-size: 18px; font-weight: bold; display: inline-block; box-shadow: 0 4px 12px rgba(110, 10, 214, 0.3);">
+              ✅ Confirmar Meu E-mail
             </a>
           </div>
-          <p style="color: #999; font-size: 14px; line-height: 1.6;">
+          <p style="color: #999; font-size: 14px; line-height: 1.6; margin-top: 30px;">
             Se o botão não funcionar, copie e cole este link no seu navegador:<br>
-            <a href="{verification_link}" style="color: #6e0ad6;">{verification_link}</a>
+            <a href="{verification_link}" style="color: #6e0ad6; word-break: break-all;">{verification_link}</a>
           </p>
-          <p style="color: #999; font-size: 14px; margin-top: 30px;">
-            Se você não se cadastrou na OLX, ignore este e-mail.
+          <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+          <p style="color: #999; font-size: 13px; margin-top: 20px;">
+            ℹ️ Se você não se cadastrou na OLX, por favor ignore este e-mail.
           </p>
-          <p style="color: #999; font-size: 12px; margin-top: 40px; text-align: center;">
-            © 2024 OLX - Todos os direitos reservados
+          <p style="color: #bbb; font-size: 12px; margin-top: 40px; text-align: center;">
+            © 2024 OLX Vendas - Todos os direitos reservados
           </p>
         </div>
       </body>
     </html>
     """
     
-    # Send email using Resend
+    text = f"""
+    Olá, {name}!
+    
+    Obrigado por se cadastrar na OLX Vendas!
+    
+    Para continuar com sua venda, precisamos confirmar seu e-mail.
+    
+    Clique no link abaixo para confirmar:
+    {verification_link}
+    
+    Se você não se cadastrou na OLX, por favor ignore este e-mail.
+    
+    ---
+    © 2024 OLX Vendas
+    """
+    
+    part1 = MIMEText(text, "plain")
+    part2 = MIMEText(html, "html")
+    message.attach(part1)
+    message.attach(part2)
+    
+    # Send email
     try:
-        params = {
-            "from": "OLX Vendas <onboarding@resend.dev>",
-            "to": [email],
-            "subject": "Confirme seu e-mail - OLX Vendas",
-            "html": html,
-        }
+        with smtplib.SMTP(smtp_server, smtp_port) as server:
+            server.starttls()
+            server.login(sender_email, sender_password)
+            server.send_message(message)
         
-        email_response = resend.Emails.send(params)
-        logger.info(f"Email sent successfully to {email}: {email_response}")
+        logger.info(f"✅ Email sent successfully to {email}")
         return True
     except Exception as e:
-        logger.error(f"Failed to send email to {email}: {str(e)}")
+        logger.error(f"❌ Failed to send email to {email}: {str(e)}")
         return False
 
 # Add your routes to the router instead of directly to app
