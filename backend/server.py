@@ -56,13 +56,12 @@ class EmailSendRequest(BaseModel):
 async def send_verification_email(email: str, name: str, verification_code: str):
     """Send verification email using Gmail SMTP with app password"""
     
-    # Gmail configuration
+    # Gmail configuration from environment variables
     smtp_server = "smtp.gmail.com"
     smtp_port = 587
-    sender_email = "lucashipnos@gmail.com"
-    # NOTA: Esta senha precisa ser uma "Senha de App" do Gmail
-    # Gere em: https://myaccount.google.com/apppasswords
+    sender_email = os.environ.get('SENDER_EMAIL', 'noreply@vendaspay.com')
     sender_password = os.environ.get('GMAIL_APP_PASSWORD', '')
+    frontend_url = os.environ.get('FRONTEND_URL', 'http://localhost:3000')
     
     if not sender_password:
         logger.warning("GMAIL_APP_PASSWORD not configured - email will not be sent")
@@ -71,7 +70,7 @@ async def send_verification_email(email: str, name: str, verification_code: str)
         return True
     
     # Verification link
-    verification_link = f"http://localhost:3000/?verified=true"
+    verification_link = f"{frontend_url}/?verified=true"
     
     # Create message
     message = MIMEMultipart("alternative")
