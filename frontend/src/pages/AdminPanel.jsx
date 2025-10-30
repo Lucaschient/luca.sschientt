@@ -82,14 +82,21 @@ const AdminPanel = () => {
           <div className="setting-group">
             <label>QR Code PIX (Imagem)</label>
             <div className="qrcode-upload">
-              {settings.qrCodeUrl && (
-                <div className="qrcode-preview">
-                  <img src={settings.qrCodeUrl} alt="QR Code Preview" />
+              {settings.qrCodeUrl ? (
+                <div className="qrcode-preview-box">
+                  <div className="qrcode-preview">
+                    <img src={settings.qrCodeUrl} alt="QR Code Preview" />
+                  </div>
+                  <p className="success-text">✓ QR Code carregado com sucesso!</p>
+                </div>
+              ) : (
+                <div className="qrcode-empty">
+                  <p>Nenhum QR Code carregado ainda</p>
                 </div>
               )}
               <label htmlFor="qrcode-file" className="btn-upload">
                 <Upload size={20} />
-                {settings.qrCodeUrl ? 'Trocar QR Code' : 'Fazer Upload do QR Code'}
+                {settings.qrCodeUrl ? 'Trocar QR Code' : 'Clique aqui para fazer Upload'}
               </label>
               <input
                 id="qrcode-file"
@@ -98,7 +105,9 @@ const AdminPanel = () => {
                 onChange={handleFileUpload}
                 style={{ display: 'none' }}
               />
-              <p className="input-hint">Faça upload da imagem do QR Code PIX. Será exibido na página de pagamento.</p>
+              <p className="input-hint">
+                <strong>Como fazer:</strong> 1) Clique no botão acima 2) Escolha a imagem do QR Code 3) Clique em "Salvar Alterações"
+              </p>
             </div>
           </div>
 
