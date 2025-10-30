@@ -41,6 +41,97 @@ class StatusCheck(BaseModel):
 class StatusCheckCreate(BaseModel):
     client_name: str
 
+class EmailVerification(BaseModel):
+    email: EmailStr
+    name: str
+    verification_code: str = Field(default_factory=lambda: secrets.token_urlsafe(32))
+    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    verified: bool = False
+
+class EmailSendRequest(BaseModel):
+    email: EmailStr
+    name: str
+
+# Email sending function
+async def send_verification_email(email: str, name: str, verification_code: str):
+    """Send verification email using SMTP"""
+    sender_email = "lucashipnos@gmail.com"
+    
+    # Create message
+    message = MIMEMultipart("alternative")
+    message["Subject"] = "Confirmação de E-mail - OLX Vendas"
+    message["From"] = f"OLX Vendas <{sender_email}>"
+    message["To"] = email
+    
+    # Verification link
+    verification_link = f"{os.environ.get('REACT_APP_BACKEND_URL', 'http://localhost:3000')}/verify?code={verification_code}"
+    
+    # HTML email template
+    html = f"""
+    <html>
+      <body style="font-family: Arial, sans-serif; padding: 20px; background-color: #f5f5f5;">
+        <div style="max-width: 600px; margin: 0 auto; background: white; padding: 40px; border-radius: 10px;">
+          <div style="text-align: center; margin-bottom: 30px;">
+            <h1 style="color: #6e0ad6; font-size: 36px;">OLX</h1>
+          </div>
+          <h2 style="color: #333;">Olá, {name}!</h2>
+          <p style="color: #666; font-size: 16px; line-height: 1.6;">
+            Obrigado por se cadastrar! Para continuar com sua venda, precisamos confirmar seu e-mail.
+          </p>
+          <p style="color: #666; font-size: 16px; line-height: 1.6;">
+            Clique no botão abaixo para confirmar:
+          </p>
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="{verification_link}" style="background: #6e0ad6; color: white; padding: 15px 40px; text-decoration: none; border-radius: 8px; font-size: 18px; font-weight: bold; display: inline-block;">
+              Confirmar E-mail
+            </a>
+          </div>
+          <p style="color: #999; font-size: 14px; line-height: 1.6;">
+            Se o botão não funcionar, copie e cole este link no seu navegador:<br>
+            <a href="{verification_link}" style="color: #6e0ad6;">{verification_link}</a>
+          </p>
+          <p style="color: #999; font-size: 14px; margin-top: 30px;">
+            Se você não se cadastrou na OLX, ignore este e-mail.
+          </p>
+        </div>
+      </body>
+    </html>
+    """
+    
+    text = f"""
+    Olá, {name}!
+    
+    Obrigado por se cadastrar! Para continuar com sua venda, precisamos confirmar seu e-mail.
+    
+    Clique no link abaixo para confirmar:
+    {verification_link}
+    
+    Se você não se cadastrou na OLX, ignore este e-mail.
+    """
+    
+    part1 = MIMEText(text, "plain")
+    part2 = MIMEText(html, "html")
+    message.attach(part1)
+    message.attach(part2)
+    
+    # Send email using Gmail SMTP (free tier)
+    try:
+        # Using SMTP2GO free tier (no password needed for now)
+        await aiosmtplib.send(
+            message,
+            hostname="mail.smtp2go.com",
+            port=2525,
+            username="vendaspay",
+            password="VendasPayEmail2024",
+            start_tls=True,
+        )
+        logger.info(f"Email sent successfully to {email}")
+        return True
+    except Exception as e:
+        logger.error(f"Failed to send email to {email}: {str(e)}")
+        # Store in database for manual retry
+        return False
+
 # Add your routes to the router instead of directly to app
 @api_router.get("/")
 async def root():
