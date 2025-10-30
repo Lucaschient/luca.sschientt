@@ -1,0 +1,298 @@
+/* Steps Common Styles */
+.step-container {
+  min-height: 100vh;
+  background: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+}
+
+.step-content {
+  padding: 40px 20px 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.step-title {
+  font-size: 48px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  letter-spacing: -0.5px;
+}
+
+.purple-title {
+  color: #6e0ad6;
+}
+
+.step-description {
+  font-size: 18px;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  font-weight: 400;
+  max-width: 700px;
+}
+
+.step-highlight {
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+.step-attention {
+  margin-top: 20px;
+}
+
+.btn-primary {
+  background: #6e0ad6;
+  color: white;
+  border: none;
+  padding: 18px 100px;
+  font-size: 18px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(110, 10, 214, 0.3);
+  margin-top: 20px;
+}
+
+.btn-primary:hover {
+  background: #5c08b8;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(110, 10, 214, 0.4);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Form Styles */
+.step-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 450px;
+  margin-top: 20px;
+}
+
+.form-input {
+  padding: 18px 20px;
+  font-size: 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #6e0ad6;
+  box-shadow: 0 0 0 3px rgba(110, 10, 214, 0.1);
+}
+
+.form-input::placeholder {
+  color: #999;
+}
+
+.bank-input::placeholder {
+  color: #333;
+  font-weight: 500;
+}
+
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-input {
+  padding-right: 50px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.password-toggle:hover {
+  color: #6e0ad6;
+}
+
+/* Taxa Section */
+.taxa-icon {
+  margin: 30px 0 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.gem-icon {
+  color: #6e0ad6;
+}
+
+.taxa-title {
+  font-size: 32px;
+  font-weight: 600;
+  color: #6e0ad6;
+  margin: 20px 0 30px;
+}
+
+.taxa-value {
+  font-size: 28px;
+  font-weight: 600;
+  color: #6e0ad6;
+  margin: 20px 0;
+}
+
+/* Payment Section */
+.qrcode-container {
+  margin: 30px 0;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.qrcode-image {
+  max-width: 300px;
+  width: 100%;
+  height: auto;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+}
+
+.pix-instruction {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.pix-key-container {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  max-width: 550px;
+  margin: 20px 0;
+}
+
+.pix-key-input {
+  flex: 1;
+  padding: 16px 20px;
+  font-size: 14px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+  font-family: monospace;
+}
+
+.btn-copy {
+  background: #6e0ad6;
+  color: white;
+  border: none;
+  padding: 16px 30px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.btn-copy:hover {
+  background: #5c08b8;
+  transform: translateY(-2px);
+}
+
+/* App Download Section */
+.app-download-section {
+  padding: 60px 20px 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+}
+
+.app-download-title {
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 60px;
+  line-height: 1.5;
+  max-width: 700px;
+  color: #6e0ad6;
+}
+
+.purple-bold {
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .step-title {
+    font-size: 32px;
+  }
+
+  .step-description {
+    font-size: 16px;
+  }
+
+  .btn-primary {
+    padding: 16px 60px;
+    font-size: 16px;
+  }
+
+  .form-input {
+    padding: 16px 18px;
+    font-size: 15px;
+  }
+
+  .pix-key-container {
+    flex-direction: column;
+  }
+
+  .btn-copy {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .app-download-title {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .step-title {
+    font-size: 26px;
+  }
+
+  .step-description {
+    font-size: 14px;
+  }
+
+  .btn-primary {
+    padding: 14px 40px;
+    font-size: 15px;
+  }
+
+  .qrcode-image {
+    max-width: 250px;
+  }
+}
