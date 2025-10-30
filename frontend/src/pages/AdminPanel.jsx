@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router-dom';
 const AdminPanel = () => {
   const navigate = useNavigate();
   const [settings, setSettings] = useState({
-    pixKey: '00020126860014br.gov.bcb.pix2564pix',
-    qrCodeUrl: '',
+    pixKey: '(11) 98668-9035',
+    qrCodeUrl: 'https://customer-assets.emergentagent.com/job_vendas-pay/artifacts/jvnivn9w_IMG-20251030-WA0000.jpg',
     taxaValue: 'Taxa Caução R$ 99,00'
   });
   const [saved, setSaved] = useState(false);
