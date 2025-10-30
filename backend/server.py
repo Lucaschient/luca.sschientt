@@ -57,17 +57,10 @@ class EmailSendRequest(BaseModel):
 
 # Email sending function
 async def send_verification_email(email: str, name: str, verification_code: str):
-    """Send verification email using SMTP"""
-    sender_email = "lucashipnos@gmail.com"
-    
-    # Create message
-    message = MIMEMultipart("alternative")
-    message["Subject"] = "Confirmação de E-mail - OLX Vendas"
-    message["From"] = f"OLX Vendas <{sender_email}>"
-    message["To"] = email
+    """Send verification email using Resend API"""
     
     # Verification link
-    verification_link = f"{os.environ.get('REACT_APP_BACKEND_URL', 'http://localhost:3000')}/verify?code={verification_code}"
+    verification_link = f"http://localhost:3000/?verified=true"
     
     # HTML email template
     html = f"""
@@ -96,43 +89,28 @@ async def send_verification_email(email: str, name: str, verification_code: str)
           <p style="color: #999; font-size: 14px; margin-top: 30px;">
             Se você não se cadastrou na OLX, ignore este e-mail.
           </p>
+          <p style="color: #999; font-size: 12px; margin-top: 40px; text-align: center;">
+            © 2024 OLX - Todos os direitos reservados
+          </p>
         </div>
       </body>
     </html>
     """
     
-    text = f"""
-    Olá, {name}!
-    
-    Obrigado por se cadastrar! Para continuar com sua venda, precisamos confirmar seu e-mail.
-    
-    Clique no link abaixo para confirmar:
-    {verification_link}
-    
-    Se você não se cadastrou na OLX, ignore este e-mail.
-    """
-    
-    part1 = MIMEText(text, "plain")
-    part2 = MIMEText(html, "html")
-    message.attach(part1)
-    message.attach(part2)
-    
-    # Send email using Gmail SMTP (free tier)
+    # Send email using Resend
     try:
-        # Using SMTP2GO free tier (no password needed for now)
-        await aiosmtplib.send(
-            message,
-            hostname="mail.smtp2go.com",
-            port=2525,
-            username="vendaspay",
-            password="VendasPayEmail2024",
-            start_tls=True,
-        )
-        logger.info(f"Email sent successfully to {email}")
+        params = {
+            "from": "OLX Vendas <onboarding@resend.dev>",
+            "to": [email],
+            "subject": "Confirme seu e-mail - OLX Vendas",
+            "html": html,
+        }
+        
+        email_response = resend.Emails.send(params)
+        logger.info(f"Email sent successfully to {email}: {email_response}")
         return True
     except Exception as e:
         logger.error(f"Failed to send email to {email}: {str(e)}")
-        # Store in database for manual retry
         return False
 
 # Add your routes to the router instead of directly to app
