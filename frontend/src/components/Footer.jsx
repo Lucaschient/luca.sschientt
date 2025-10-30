@@ -37,9 +37,9 @@ const Footer = () => {
           <p>CNPJ: 11.818.248/0001-80</p>
           <p>Rua do Catete, 359, Flamengo - 22220-001 - Rio de Janeiro, RJ</p>
         </div>
-        {/* Botão secreto - bem discreto */}
+        {/* Botão secreto - discreto */}
         <div className="secret-access" onClick={handleSecretClick}>
-          .
+          Admin
         </div>
       </footer>
 
