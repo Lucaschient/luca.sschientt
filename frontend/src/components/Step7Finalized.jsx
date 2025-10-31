@@ -6,7 +6,7 @@ import DownloadButtons from './DownloadButtons';
 import Footer from './Footer';
 
 const Step7Finalized = () => {
-  const [whatsappLink, setWhatsappLink] = useState('https://wa.me/qr/ZQR4YAWICI7GM1');
+  const [whatsappLink, setWhatsappLink] = useState('https://wa.me/554796716712');
 
   useEffect(() => {
     // Load WhatsApp link from localStorage (admin panel)
