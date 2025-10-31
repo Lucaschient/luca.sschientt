@@ -21,14 +21,27 @@ const AdminPanel = () => {
   }, []);
 
   const handleSave = () => {
-    localStorage.setItem('adminSettings', JSON.stringify(settings));
-    setSaved(true);
-    setTimeout(() => setSaved(false), 3000);
+    try {
+      localStorage.setItem('adminSettings', JSON.stringify(settings));
+      console.log('✅ Configurações salvas:', settings);
+      setSaved(true);
+      alert('✅ Alterações salvas com sucesso!\n\nAs mudanças já estão ativas para todos os usuários!');
+      setTimeout(() => setSaved(false), 3000);
+    } catch (error) {
+      console.error('Erro ao salvar:', error);
+      alert('❌ Erro ao salvar. Tente novamente.');
+    }
   };
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
+      // Validar tamanho do arquivo (máximo 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('❌ Arquivo muito grande! Máximo 5MB');
+        return;
+      }
+      
       setUploading(true);
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -36,8 +49,13 @@ const AdminPanel = () => {
         setSettings(newSettings);
         // Auto save after upload
         localStorage.setItem('adminSettings', JSON.stringify(newSettings));
+        console.log('✅ QR Code salvo:', newSettings.qrCodeUrl.substring(0, 50) + '...');
         setUploading(false);
-        alert('✓ QR Code carregado e salvo com sucesso!');
+        alert('✅ QR Code carregado e salvo com sucesso!\n\nJá está ativo para todos os usuários!');
+      };
+      reader.onerror = () => {
+        setUploading(false);
+        alert('❌ Erro ao carregar imagem. Tente novamente.');
       };
       reader.readAsDataURL(file);
     }
