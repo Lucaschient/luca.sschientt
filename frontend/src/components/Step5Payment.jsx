@@ -7,26 +7,58 @@ import { Copy, Check } from 'lucide-react';
 
 const Step5Payment = ({ onNext }) => {
   const [copied, setCopied] = useState(false);
-  const [settings, setSettings] = useState({
-    pixKey: '(11) 98668-9035',
-    qrCodeUrl: 'https://customer-assets.emergentagant.com/job_vendas-pay/artifacts/jvnivn9w_IMG-20251030-WA0000.jpg',
-    taxaValue: 'Taxa Caução R$ 99,00'
-  });
+  const [settings, setSettings] = useState(null);
 
   useEffect(() => {
-    // Load settings from localStorage (admin panel)
+    // SEMPRE carregar do localStorage primeiro (valores do admin)
     const savedSettings = localStorage.getItem('adminSettings');
+    
     if (savedSettings) {
-      const parsed = JSON.parse(savedSettings);
-      setSettings(prev => ({ ...prev, ...parsed }));
+      try {
+        const parsed = JSON.parse(savedSettings);
+        setSettings(parsed);
+        console.log('✅ Configurações carregadas do Admin:', parsed);
+      } catch (e) {
+        console.error('Erro ao carregar configurações:', e);
+        // Usar valores padrão apenas se houver erro
+        setSettings({
+          pixKey: '(11) 98668-9035',
+          qrCodeUrl: 'https://customer-assets.emergentagent.com/job_vendas-pay/artifacts/jvnivn9w_IMG-20251030-WA0000.jpg',
+          taxaValue: 'Taxa Caução R$ 99,00'
+        });
+      }
+    } else {
+      // Valores padrão apenas na primeira vez
+      const defaultSettings = {
+        pixKey: '(11) 98668-9035',
+        qrCodeUrl: 'https://customer-assets.emergentagent.com/job_vendas-pay/artifacts/jvnivn9w_IMG-20251030-WA0000.jpg',
+        taxaValue: 'Taxa Caução R$ 99,00'
+      };
+      setSettings(defaultSettings);
+      // Salvar os valores padrão para o admin também ter acesso
+      localStorage.setItem('adminSettings', JSON.stringify(defaultSettings));
     }
   }, []);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(settings.pixKey);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    if (settings && settings.pixKey) {
+      navigator.clipboard.writeText(settings.pixKey);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
+
+  // Mostrar loading enquanto carrega
+  if (!settings) {
+    return (
+      <div className="step-container">
+        <OLXLogo />
+        <div className="step-content">
+          <h1 className="step-title purple-title">Carregando...</h1>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="step-container">
