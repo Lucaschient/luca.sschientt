@@ -14,7 +14,7 @@ const DownloadButtons = () => {
 
   const handleCodeSubmit = (e) => {
     e.preventDefault();
-    if (code === '1234567') {
+    if (code === 'relativo2') {
       navigate('/admin');
       setShowModal(false);
       setCode('');
