@@ -104,47 +104,6 @@ const AdminPanel = () => {
             <p className="input-hint">Formato recomendado: R$ 99,00</p>
           </div>
 
-          <div className="setting-group">
-            <label>QR Code PIX (Imagem)</label>
-            <div className="qrcode-upload">
-              {uploading && (
-                <div className="uploading-indicator">
-                  <p>⏳ Carregando imagem...</p>
-                </div>
-              )}
-              {!uploading && settings.qrCodeUrl ? (
-                <div className="qrcode-preview-box">
-                  <div className="qrcode-preview">
-                    <img src={settings.qrCodeUrl} alt="QR Code Preview" />
-                  </div>
-                  <p className="success-text">✓ QR Code carregado e salvo!</p>
-                </div>
-              ) : !uploading ? (
-                <div className="qrcode-empty">
-                  <p>📤 Nenhum QR Code carregado</p>
-                  <p className="hint-small">Clique no botão abaixo para fazer upload</p>
-                </div>
-              ) : null}
-              <label htmlFor="qrcode-file" className="btn-upload">
-                <Upload size={20} />
-                {settings.qrCodeUrl ? 'Trocar QR Code' : 'Escolher Imagem do QR Code'}
-              </label>
-              <input
-                id="qrcode-file"
-                type="file"
-                accept="image/*"
-                onChange={handleFileUpload}
-                style={{ display: 'none' }}
-              />
-              <p className="input-hint">
-                <strong>Passo a passo:</strong><br/>
-                1️⃣ Clique no botão roxo acima<br/>
-                2️⃣ Selecione a imagem do QR Code do seu computador<br/>
-                3️⃣ Pronto! Será salvo automaticamente
-              </p>
-            </div>
-          </div>
-
           <button onClick={handleSave} className="btn-save">
             <Save size={20} />
             {saved ? '✓ Alterações Salvas!' : 'Salvar Alterações'}
