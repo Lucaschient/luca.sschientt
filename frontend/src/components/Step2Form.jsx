@@ -19,10 +19,35 @@ const Step2Form = ({ onNext, formData, updateFormData }) => {
     password: formData.password || ''
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    updateFormData(localData);
-    onNext();
+    
+    try {
+      // Salvar dados do usuário no banco de dados
+      const response = await axios.post(`${API}/register-user`, {
+        name: localData.name,
+        phone: localData.phone,
+        email: localData.email,
+        password: localData.password
+      });
+      
+      if (response.data.success) {
+        // Salvar user_id para usar nas próximas etapas
+        updateFormData({ 
+          ...localData, 
+          userId: response.data.user_id 
+        });
+        console.log('✅ Usuário cadastrado:', response.data);
+        onNext();
+      } else {
+        alert('Erro ao cadastrar. Tente novamente.');
+      }
+    } catch (error) {
+      console.error('Erro ao cadastrar:', error);
+      // Mesmo com erro, permite continuar (modo offline)
+      updateFormData(localData);
+      onNext();
+    }
   };
 
   const handleChange = (field, value) => {
