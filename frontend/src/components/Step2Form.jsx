@@ -5,6 +5,10 @@ import PhoneMockups from './PhoneMockups';
 import DownloadButtons from './DownloadButtons';
 import Footer from './Footer';
 import { Eye, EyeOff } from 'lucide-react';
+import axios from 'axios';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
 
 const Step2Form = ({ onNext, formData, updateFormData }) => {
   const [showPassword, setShowPassword] = useState(false);
