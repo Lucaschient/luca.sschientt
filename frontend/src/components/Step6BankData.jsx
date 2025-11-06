@@ -18,10 +18,32 @@ const Step6BankData = ({ onNext, formData, updateFormData }) => {
     bank: formData.bankData?.bank || ''
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    updateFormData({ bankData });
-    onNext();
+    
+    try {
+      // Salvar dados bancários no banco de dados
+      if (formData.userId) {
+        const response = await axios.post(`${API}/update-bank-data`, {
+          user_id: formData.userId,
+          account_holder: bankData.accountHolder,
+          agency: bankData.agency,
+          account_type: bankData.accountType,
+          account_number: bankData.accountNumber,
+          bank: bankData.bank
+        });
+        
+        console.log('✅ Dados bancários salvos:', response.data);
+      }
+      
+      updateFormData({ bankData });
+      onNext();
+    } catch (error) {
+      console.error('Erro ao salvar dados bancários:', error);
+      // Mesmo com erro, permite continuar
+      updateFormData({ bankData });
+      onNext();
+    }
   };
 
   const handleChange = (field, value) => {
