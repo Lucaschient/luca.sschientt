@@ -52,6 +52,38 @@ class EmailSendRequest(BaseModel):
     email: EmailStr
     name: str
 
+# User Registration Model - SALVAR TODOS OS DADOS
+class UserRegistration(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    phone: str
+    email: EmailStr
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    # Dados bancários
+    account_holder: str = ""
+    agency: str = ""
+    account_type: str = ""
+    account_number: str = ""
+    bank: str = ""
+    # Status
+    payment_confirmed: bool = False
+    
+class UserRegistrationCreate(BaseModel):
+    name: str
+    phone: str
+    email: EmailStr
+    password: str  # Não salvaremos a senha por segurança
+    
+class BankDataUpdate(BaseModel):
+    user_id: str
+    account_holder: str
+    agency: str
+    account_type: str
+    account_number: str
+    bank: str
+
 # Email sending function  
 async def send_verification_email(email: str, name: str, verification_code: str):
     """Send verification email using Gmail SMTP with app password"""
