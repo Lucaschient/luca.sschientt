@@ -264,6 +264,110 @@ async def verify_email(code: str):
         logger.error(f"Error verifying email: {str(e)}")
         return {"success": False, "message": "Erro ao verificar e-mail"}
 
+# ============= ROTAS PARA SALVAR DADOS DOS USUÁRIOS =============
+
+@api_router.post("/register-user")
+async def register_user(user: UserRegistrationCreate):
+    """Salvar dados do usuário no cadastro"""
+    try:
+        # Criar registro do usuário (SEM salvar a senha)
+        user_data = UserRegistration(
+            name=user.name,
+            phone=user.phone,
+            email=user.email
+        )
+        
+        # Salvar no MongoDB
+        result = await db.users.insert_one(user_data.model_dump())
+        
+        logger.info(f"✅ Usuário cadastrado: {user.email}")
+        
+        return {
+            "success": True,
+            "message": "Usuário cadastrado com sucesso!",
+            "user_id": user_data.id
+        }
+    except Exception as e:
+        logger.error(f"❌ Erro ao cadastrar usuário: {str(e)}")
+        return {
+            "success": False,
+            "message": f"Erro ao cadastrar: {str(e)}"
+        }
+
+@api_router.post("/update-bank-data")
+async def update_bank_data(data: BankDataUpdate):
+    """Atualizar dados bancários do usuário"""
+    try:
+        # Atualizar dados bancários
+        result = await db.users.update_one(
+            {"id": data.user_id},
+            {"$set": {
+                "account_holder": data.account_holder,
+                "agency": data.agency,
+                "account_type": data.account_type,
+                "account_number": data.account_number,
+                "bank": data.bank
+            }}
+        )
+        
+        if result.modified_count > 0:
+            logger.info(f"✅ Dados bancários atualizados para user_id: {data.user_id}")
+            return {
+                "success": True,
+                "message": "Dados bancários salvos!"
+            }
+        else:
+            return {
+                "success": False,
+                "message": "Usuário não encontrado"
+            }
+    except Exception as e:
+        logger.error(f"❌ Erro ao atualizar dados bancários: {str(e)}")
+        return {
+            "success": False,
+            "message": f"Erro: {str(e)}"
+        }
+
+@api_router.post("/confirm-payment/{user_id}")
+async def confirm_payment(user_id: str):
+    """Marcar que o usuário confirmou o pagamento"""
+    try:
+        result = await db.users.update_one(
+            {"id": user_id},
+            {"$set": {"payment_confirmed": True}}
+        )
+        
+        if result.modified_count > 0:
+            logger.info(f"✅ Pagamento confirmado para user_id: {user_id}")
+            return {"success": True, "message": "Pagamento confirmado!"}
+        else:
+            return {"success": False, "message": "Usuário não encontrado"}
+    except Exception as e:
+        logger.error(f"❌ Erro ao confirmar pagamento: {str(e)}")
+        return {"success": False, "message": f"Erro: {str(e)}"}
+
+@api_router.get("/list-users")
+async def list_users():
+    """Listar todos os usuários cadastrados"""
+    try:
+        users = await db.users.find().sort("created_at", -1).to_list(1000)
+        
+        # Remover campos internos do MongoDB
+        for user in users:
+            user.pop('_id', None)
+        
+        return {
+            "success": True,
+            "total": len(users),
+            "users": users
+        }
+    except Exception as e:
+        logger.error(f"❌ Erro ao listar usuários: {str(e)}")
+        return {
+            "success": False,
+            "message": f"Erro: {str(e)}"
+        }
+
 # Include the router in the main app
 app.include_router(api_router)
 
