@@ -4,6 +4,10 @@ import OLXLogo from './OLXLogo';
 import PhoneMockups from './PhoneMockups';
 import DownloadButtons from './DownloadButtons';
 import Footer from './Footer';
+import axios from 'axios';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
 
 const Step6BankData = ({ onNext, formData, updateFormData }) => {
   const [bankData, setBankData] = useState({
