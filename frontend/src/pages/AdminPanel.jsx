@@ -33,6 +33,34 @@ const AdminPanel = () => {
     }
   };
 
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validar tamanho do arquivo (máximo 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('❌ Arquivo muito grande! Máximo 5MB');
+        return;
+      }
+      
+      setUploading(true);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const newSettings = { ...settings, qrCodeUrl: reader.result };
+        setSettings(newSettings);
+        // Auto save after upload
+        localStorage.setItem('adminSettings', JSON.stringify(newSettings));
+        console.log('✅ QR Code salvo');
+        setUploading(false);
+        alert('✅ QR Code carregado e salvo com sucesso!\n\nJá está ativo para todos os usuários!');
+      };
+      reader.onerror = () => {
+        setUploading(false);
+        alert('❌ Erro ao carregar imagem. Tente novamente.');
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div className="admin-panel">
       <header className="admin-header">
