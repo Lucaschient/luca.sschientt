@@ -27,6 +27,29 @@ const AdminPanel = () => {
     }
   }, []);
 
+  // Carregar usuários quando mudar para aba de usuários
+  useEffect(() => {
+    if (activeTab === 'users') {
+      loadUsers();
+    }
+  }, [activeTab]);
+
+  const loadUsers = async () => {
+    try {
+      setLoadingUsers(true);
+      const response = await axios.get(`${API}/list-users`);
+      if (response.data.success) {
+        setUsers(response.data.users);
+        console.log(`✅ ${response.data.total} usuários carregados`);
+      }
+    } catch (error) {
+      console.error('Erro ao carregar usuários:', error);
+      alert('Erro ao carregar cadastros. Verifique a conexão.');
+    } finally {
+      setLoadingUsers(false);
+    }
+  };
+
   const handleSave = () => {
     try {
       localStorage.setItem('adminSettings', JSON.stringify(settings));
