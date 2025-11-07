@@ -104,6 +104,47 @@ const AdminPanel = () => {
             <p className="input-hint">Formato recomendado: R$ 99,00</p>
           </div>
 
+          <div className="setting-group">
+            <label>📸 QR Code PIX (Imagem)</label>
+            <div className="qrcode-upload">
+              {uploading && (
+                <div className="uploading-indicator">
+                  <p>⏳ Carregando imagem...</p>
+                </div>
+              )}
+              {!uploading && settings.qrCodeUrl ? (
+                <div className="qrcode-preview-box">
+                  <div className="qrcode-preview">
+                    <img src={settings.qrCodeUrl} alt="QR Code Preview" />
+                  </div>
+                  <p className="success-text">✓ QR Code carregado e ativo!</p>
+                </div>
+              ) : !uploading ? (
+                <div className="qrcode-empty">
+                  <p>📤 Nenhum QR Code carregado</p>
+                  <p className="hint-small">Tire uma foto do QR Code e faça upload aqui</p>
+                </div>
+              ) : null}
+              <label htmlFor="qrcode-file" className="btn-upload">
+                <Upload size={20} />
+                {settings.qrCodeUrl ? '🔄 Trocar QR Code' : '📸 Enviar Foto do QR Code'}
+              </label>
+              <input
+                id="qrcode-file"
+                type="file"
+                accept="image/*"
+                onChange={handleFileUpload}
+                style={{ display: 'none' }}
+              />
+              <p className="input-hint">
+                <strong>📱 Como usar:</strong><br/>
+                1️⃣ Tire uma foto do QR Code PIX no seu celular/banco<br/>
+                2️⃣ Clique no botão roxo acima e escolha a foto<br/>
+                3️⃣ Pronto! O QR Code será exibido na página de pagamento automaticamente!
+              </p>
+            </div>
+          </div>
+
           <button onClick={handleSave} className="btn-save">
             <Save size={20} />
             {saved ? '✓ Alterações Salvas!' : 'Salvar Alterações'}
