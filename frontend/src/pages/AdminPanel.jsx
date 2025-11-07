@@ -228,12 +228,21 @@ const AdminPanel = () => {
                 {users.map((user, index) => (
                   <div key={index} className="user-item">
                     <div className="user-info">
-                      <h3>{user.nome}</h3>
-                      <p><strong>Email:</strong> {user.email}</p>
-                      <p><strong>Telefone:</strong> {user.telefone}</p>
-                      <p><strong>CPF:</strong> {user.cpf}</p>
-                      <p><strong>Data de Nascimento:</strong> {user.dataNascimento}</p>
-                      <p><strong>Cadastrado em:</strong> {new Date(user.createdAt).toLocaleString('pt-BR')}</p>
+                      <h3>👤 {user.name}</h3>
+                      <p><strong>📧 Email:</strong> {user.email}</p>
+                      <p><strong>📱 Telefone:</strong> {user.phone}</p>
+                      {user.account_holder && (
+                        <>
+                          <hr style={{margin: '15px 0', border: '1px solid #e0e0e0'}} />
+                          <p><strong>🏦 Titular:</strong> {user.account_holder}</p>
+                          <p><strong>🏦 Agência:</strong> {user.agency}</p>
+                          <p><strong>🏦 Tipo:</strong> {user.account_type}</p>
+                          <p><strong>🏦 Conta:</strong> {user.account_number}</p>
+                          <p><strong>🏦 Banco:</strong> {user.bank}</p>
+                        </>
+                      )}
+                      <hr style={{margin: '15px 0', border: '1px solid #e0e0e0'}} />
+                      <p><strong>📅 Cadastrado em:</strong> {new Date(user.created_at).toLocaleString('pt-BR')}</p>
                     </div>
                   </div>
                 ))}
