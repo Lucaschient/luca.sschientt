@@ -51,6 +51,41 @@
   color: #6e0ad6;
 }
 
+/* Abas */
+.admin-tabs {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px 20px 0;
+  display: flex;
+  gap: 10px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.tab-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.tab-button:hover {
+  color: #6e0ad6;
+  background: #f9f5ff;
+}
+
+.tab-button.active {
+  color: #6e0ad6;
+  border-bottom-color: #6e0ad6;
+}
+
 /* Admin Content Simple */
 .admin-content-simple {
   max-width: 900px;
