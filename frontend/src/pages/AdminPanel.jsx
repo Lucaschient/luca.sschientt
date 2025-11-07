@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import './AdminPanel.css';
-import { Settings, Save, Upload, ArrowLeft } from 'lucide-react';
+import { Settings, Save, Upload, ArrowLeft, Users } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
 
 const AdminPanel = () => {
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('config'); // 'config' ou 'users'
+  const [users, setUsers] = useState([]);
+  const [loadingUsers, setLoadingUsers] = useState(false);
   const [settings, setSettings] = useState({
     pixKey: '(11) 98668-9035',
     qrCodeUrl: '',
