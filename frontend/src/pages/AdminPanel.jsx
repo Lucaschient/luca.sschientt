@@ -7,9 +7,11 @@ const AdminPanel = () => {
   const navigate = useNavigate();
   const [settings, setSettings] = useState({
     pixKey: '(11) 98668-9035',
+    qrCodeUrl: '',
     taxaValue: 'Taxa Caução R$ 99,00'
   });
   const [saved, setSaved] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     const savedSettings = localStorage.getItem('adminSettings');
