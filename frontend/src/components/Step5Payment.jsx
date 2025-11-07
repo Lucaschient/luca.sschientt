@@ -23,6 +23,7 @@ const Step5Payment = ({ onNext }) => {
         // Usar valores padrão apenas se houver erro
         setSettings({
           pixKey: '(11) 98668-9035',
+          qrCodeUrl: '',
           taxaValue: 'Taxa Caução R$ 99,00'
         });
       }
