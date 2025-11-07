@@ -304,4 +304,86 @@
   .admin-content-simple {
     padding: 20px;
   }
+
+  .admin-tabs {
+    padding: 15px 15px 0;
+  }
+
+  .tab-button {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+}
+
+/* Users Card */
+.users-card {
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.users-card h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.loading-users {
+  text-align: center;
+  padding: 60px 20px;
+  color: #999;
+  font-size: 16px;
+}
+
+.no-users {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.no-users p {
+  font-size: 16px;
+  color: #666;
+  margin: 10px 0;
+}
+
+.users-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.user-item {
+  background: #f9f9f9;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.user-item:hover {
+  border-color: #6e0ad6;
+  background: #f9f5ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(110, 10, 214, 0.1);
+}
+
+.user-info h3 {
+  font-size: 20px;
+  color: #6e0ad6;
+  margin-bottom: 15px;
+}
+
+.user-info p {
+  font-size: 14px;
+  color: #666;
+  margin: 8px 0;
+  line-height: 1.6;
+}
+
+.user-info p strong {
+  color: #333;
+  font-weight: 600;
 }
