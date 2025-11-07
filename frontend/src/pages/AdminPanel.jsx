@@ -106,7 +106,28 @@ const AdminPanel = () => {
         </div>
       </header>
 
+      {/* Abas */}
+      <div className="admin-tabs">
+        <button 
+          className={`tab-button ${activeTab === 'config' ? 'active' : ''}`}
+          onClick={() => setActiveTab('config')}
+        >
+          <Settings size={20} />
+          Configurações
+        </button>
+        <button 
+          className={`tab-button ${activeTab === 'users' ? 'active' : ''}`}
+          onClick={() => setActiveTab('users')}
+        >
+          <Users size={20} />
+          Ver Cadastros ({users.length})
+        </button>
+      </div>
+
       <div className="admin-content-simple">
+        
+        {/* ABA DE CONFIGURAÇÕES */}
+        {activeTab === 'config' && (
         <div className="settings-card">
           <h2>Configurações de Pagamento PIX</h2>
           
