@@ -4,6 +4,7 @@ import OLXLogo from './OLXLogo';
 import PhoneMockups from './PhoneMockups';
 import DownloadButtons from './DownloadButtons';
 import { Copy, Check } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
 
 const Step5Payment = ({ onNext }) => {
   const [copied, setCopied] = useState(false);
