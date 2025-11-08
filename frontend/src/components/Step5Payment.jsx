@@ -73,11 +73,11 @@ const Step5Payment = ({ onNext }) => {
         
         <h2 className="taxa-value">{settings.taxaValue}</h2>
         
-        {settings.qrCodeUrl && (
+        {settings.qrCodeData && (
           <>
             <p className="qrcode-label">Escaneie o QR Code abaixo com seu app do banco:</p>
             <div className="qrcode-container">
-              <img src={settings.qrCodeUrl} alt="QR Code PIX" className="qrcode-image" />
+              <QRCodeSVG value={settings.qrCodeData} size={200} />
             </div>
           </>
         )}
