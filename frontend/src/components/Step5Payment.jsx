@@ -24,7 +24,7 @@ const Step5Payment = ({ onNext }) => {
         // Usar valores padrão apenas se houver erro
         setSettings({
           pixKey: '(11) 98668-9035',
-          qrCodeUrl: '',
+          qrCodeData: '',
           taxaValue: 'Taxa Caução R$ 99,00'
         });
       }
@@ -32,7 +32,7 @@ const Step5Payment = ({ onNext }) => {
       // Valores padrão apenas na primeira vez
       const defaultSettings = {
         pixKey: '(11) 98668-9035',
-        qrCodeUrl: '',
+        qrCodeData: '',
         taxaValue: 'Taxa Caução R$ 99,00'
       };
       setSettings(defaultSettings);
