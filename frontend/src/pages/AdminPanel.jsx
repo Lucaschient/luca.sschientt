@@ -74,19 +74,62 @@ const AdminPanel = () => {
       
       setUploading(true);
       const reader = new FileReader();
+      
       reader.onloadend = () => {
-        const newSettings = { ...settings, qrCodeUrl: reader.result };
-        setSettings(newSettings);
-        // Auto save after upload
-        localStorage.setItem('adminSettings', JSON.stringify(newSettings));
-        console.log('✅ QR Code salvo');
-        setUploading(false);
-        alert('✅ QR Code carregado e salvo com sucesso!\n\nJá está ativo para todos os usuários!');
+        // Criar uma imagem para escanear o QR Code
+        const img = new Image();
+        img.onload = () => {
+          try {
+            // Criar canvas para processar a imagem
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+            
+            // Pegar dados da imagem
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            
+            // Escanear QR Code
+            const jsQR = require('jsqr');
+            const code = jsQR(imageData.data, imageData.width, imageData.height);
+            
+            if (code && code.data) {
+              // QR Code encontrado! Salvar os DADOS, não a imagem
+              const newSettings = { 
+                ...settings, 
+                qrCodeData: code.data,  // Dados do QR Code
+                qrCodeUrl: ''  // Não salvar a imagem
+              };
+              setSettings(newSettings);
+              localStorage.setItem('adminSettings', JSON.stringify(newSettings));
+              setUploading(false);
+              alert(`✅ QR Code escaneado e salvo!\n\nDados: ${code.data.substring(0, 50)}...`);
+              console.log('✅ QR Code escaneado:', code.data);
+            } else {
+              setUploading(false);
+              alert('❌ Não foi possível ler o QR Code da imagem.\nTente tirar uma foto mais clara.');
+            }
+          } catch (error) {
+            console.error('Erro ao escanear QR Code:', error);
+            setUploading(false);
+            alert('❌ Erro ao processar QR Code. Tente novamente.');
+          }
+        };
+        
+        img.onerror = () => {
+          setUploading(false);
+          alert('❌ Erro ao carregar imagem.');
+        };
+        
+        img.src = reader.result;
       };
+      
       reader.onerror = () => {
         setUploading(false);
-        alert('❌ Erro ao carregar imagem. Tente novamente.');
+        alert('❌ Erro ao ler arquivo. Tente novamente.');
       };
+      
       reader.readAsDataURL(file);
     }
   };
