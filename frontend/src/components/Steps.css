@@ -159,6 +159,14 @@
 }
 
 /* Payment Section */
+.qrcode-label {
+  font-size: 16px;
+  color: #333;
+  font-weight: 500;
+  margin: 25px 0 10px;
+  text-align: center;
+}
+
 .qrcode-container {
   margin: 40px auto;
   padding: 0;
@@ -185,7 +193,8 @@
 .pix-instruction {
   font-size: 16px;
   color: #333;
-  margin-bottom: 15px;
+  margin: 30px 0 15px;
+  font-weight: 500;
 }
 
 .pix-key-container {
