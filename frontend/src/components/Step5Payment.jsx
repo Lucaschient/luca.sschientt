@@ -73,12 +73,15 @@ const Step5Payment = ({ onNext }) => {
         <h2 className="taxa-value">{settings.taxaValue}</h2>
         
         {settings.qrCodeUrl && (
-          <div className="qrcode-container">
-            <img src={settings.qrCodeUrl} alt="QR Code PIX" className="qrcode-image" />
-          </div>
+          <>
+            <p className="qrcode-label">Escaneie o QR Code abaixo com seu app do banco:</p>
+            <div className="qrcode-container">
+              <img src={settings.qrCodeUrl} alt="QR Code PIX" className="qrcode-image" />
+            </div>
+          </>
         )}
         
-        <p className="pix-instruction">Use a chave PIX abaixo para fazer o pagamento:</p>
+        <p className="pix-instruction">Ou use a chave PIX abaixo para fazer o pagamento:</p>
         
         <div className="pix-key-container">
           <input
